@@ -9,8 +9,10 @@
     [ # Include the results of the hardware scan.
       ./hardware-configuration.nix
       ./users.nix
+      ./applications/vscode.nix
     ];
 
+  # sets nix path to persist directory
   nix.nixPath =
     [
       "nixpkgs=/nix/var/nix/profiles/per-user/root/channels/nixos"
@@ -23,17 +25,19 @@
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
 
+  # rollback on boot
   boot.initrd.postDeviceCommands = lib.mkAfter ''
     zfs rollback -r rpool/root@blank
   '';
 
-  networking.hostId = "deadbeef";
+
+  networking.hostId = "c0ffee42"; # something for zfs
   networking.hostName = "nixos"; # Define your hostname.
   networking.networkmanager.enable = true;
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
 
   # Set your time zone.
-  # time.timeZone = "Europe/Amsterdam";
+  time.timeZone = "America/Los_Angeles";
 
   # The global useDHCP flag is deprecated, therefore explicitly set to false here.
   # Per-interface useDHCP will be mandatory in the future, so this generated config
@@ -46,21 +50,19 @@
   # networking.proxy.noProxy = "127.0.0.1,localhost,internal.domain";
 
   # Select internationalisation properties.
-  # i18n.defaultLocale = "en_US.UTF-8";
-  # console = {
-  #   font = "Lat2-Terminus16";
-  #   keyMap = "us";
-  # };
+  i18n.defaultLocale = "en_US.UTF-8";
+  console = {
+    font = "Lat2-Terminus16";
+    keyMap = "us";
+  };
 
   # Enable the X11 windowing system.
   services.xserver.enable = true;
-
 
   # Enable the Plasma 5 Desktop Environment.
   services.xserver.displayManager.sddm.enable = true;
   services.xserver.desktopManager.plasma5.enable = true;
   
-
   # Configure keymap in X11
   # services.xserver.layout = "us";
   # services.xserver.xkbOptions = "eurosign:e";
@@ -69,21 +71,42 @@
   # services.printing.enable = true;
 
   # Enable sound.
-  # sound.enable = true;
-  # hardware.pulseaudio.enable = true;
+  sound.enable = true;
+  hardware.pulseaudio.enable = true;
 
   # Enable touchpad support (enabled default in most desktopManager).
-  # services.xserver.libinput.enable = true;
+  services.xserver.libinput.enable = true;
+
+  virtualisation.virtualbox.host.enable = true;
+  
 
   # List packages installed in system profile. To search, run:
   # $ nix search wget
+  nixpkgs.config.allowUnfree = true;
+
   environment.systemPackages = with pkgs; [
+    home-manager
     vim # Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed by default.
     wget
     firefox
     zfs
     git
+    vlc
+    pavucontrol
+    unzip
+    screen
+
+    discord
+    virtualbox
+    alacritty
+    kicad
+    zoom-us
   ];
+  #persist
+  environment.etc."NetworkManager/system-connections"= {
+    source = "/persist/etc/NetworkManager/system-connections";
+  };
+
 
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.
