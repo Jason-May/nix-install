@@ -9,7 +9,6 @@
     [ # Include the results of the hardware scan.
       ./hardware-configuration.nix
       ./users.nix
-      ./applications/vscode.nix
     ];
 
   # sets nix path to persist directory
@@ -95,7 +94,8 @@
     pavucontrol
     unzip
     screen
-
+ 
+    vscode
     discord
     virtualbox
     alacritty
