@@ -1,3 +1,6 @@
+# nix-config
+useful articles for setup
+
 erase your darlings
 https://grahamc.com/blog/erase-your-darlings
 
@@ -9,3 +12,13 @@ https://elis.nu/blog/2020/05/nixos-tmpfs-as-root/
 
 home manager tutorial
 https://ghedam.at/24353/tutorial-getting-started-with-home-manager-for-nix
+
+password gen
+
+this config still requires a users.nix file.
+because the root file system is erased on boot, it requires "initialHashedPassword" for each user
+
+to generate the hashed passwords, use
+mkpasswd -m sha-512 | sed 's/\$/\\$/g'
+
+in addition, users.mutableUsers must be false
