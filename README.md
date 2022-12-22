@@ -13,6 +13,9 @@ https://elis.nu/blog/2020/05/nixos-tmpfs-as-root/
 home manager tutorial
 https://ghedam.at/24353/tutorial-getting-started-with-home-manager-for-nix
 
+startup optimization:
+https://majiehong.com/post/2021-07-30_slow_nixos_startup/
+
 password gen
 
 this config still requires a users.nix file.
