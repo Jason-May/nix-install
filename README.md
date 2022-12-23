@@ -6,6 +6,7 @@ https://grahamc.com/blog/erase-your-darlings
 
 erase your darlings script
 https://gist.github.com/mx00s/ea2462a3fe6fdaa65692fe7ee824de3e
+https://gist.github.com/Jason-May/f33b922c3fdd756dd09135561cb7f573
 
 tmpfs as root
 https://elis.nu/blog/2020/05/nixos-tmpfs-as-root/
