@@ -17,6 +17,9 @@ https://ghedam.at/24353/tutorial-getting-started-with-home-manager-for-nix
 startup optimization:
 https://majiehong.com/post/2021-07-30_slow_nixos_startup/
 
+laptop additional stuff:
+https://huijzer.xyz/posts/nixos-laptop/
+
 password gen
 
 this config still requires a users.nix file.
