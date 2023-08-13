@@ -138,6 +138,9 @@ mkdir -p /mnt/persist/etc/ssh
 info "Generating NixOS configuration (/mnt/etc/nixos/*.nix) ..."
 nixos-generate-config --root /mnt
 
+info "Creating persistent directory for user authentication ..."
+mkdir -p /mnt/persist/etc/passwords
+
 info "Enter password for the root user ..."
 ROOT_PASSWORD_HASH="$(mkpasswd -m sha-512 | sed 's/\$/\\$/g')"
 
@@ -146,6 +149,10 @@ read USER_NAME
 
 info "Enter password for '${USER_NAME}' user ..."
 USER_PASSWORD_HASH="$(mkpasswd -m sha-512 | sed 's/\$/\\$/g')"
+
+echo ${ROOT_PASSWORD_HASH} > /mnt/persist/etc/passwords/root
+echo ${USER_PASSWORD_HASH} > /mnt/persist/etc/passwords/${USER_NAME}
+
 
 info "Moving generated hardware-configuration.nix to /persist/etc/nixos/ ..."
 mkdir -p /mnt/persist/etc/nixos
@@ -209,6 +216,7 @@ cat <<EOF > /mnt/persist/etc/nixos/configuration.nix
     ];
 
   #persist
+  fileSystems."/persist".neededForBoot = true;
   environment.etc."NetworkManager/system-connections"= {
     source = "/persist/etc/NetworkManager/system-connections";
   };
@@ -241,19 +249,19 @@ cat <<EOF > /mnt/persist/etc/nixos/configuration.nix
     mutableUsers = false;
     users = {
       root = {
-        initialHashedPassword = "${ROOT_PASSWORD_HASH}";
-	isSystemUser = true;
+        passwordFile = "/persist/etc/passwords/root";
+	      isSystemUser = true;
       };
 
       ${USER_NAME} = {
         createHome = true;
-        initialHashedPassword = "${USER_PASSWORD_HASH}";
-	extraGroups = [ "wheel" ];
-	group = "users";
-	uid = 1000;
-	home = "/home/${USER_NAME}";
-	useDefaultShell = true;
-	isNormalUser = true;
+        passwordFile = "/persist/etc/passwords/${USER_NAME}";
+	      extraGroups = [ "wheel" "networkmanager" "audio" "dialout" ];
+        group = "users";
+        uid = 1000;
+        home = "/home/${USER_NAME}";
+        useDefaultShell = true;
+        isNormalUser = true;
       };
     };
   };
