@@ -172,6 +172,7 @@ cat <<EOF > /mnt/persist/etc/nixos/configuration.nix
   imports =
     [ 
       ./hardware-configuration.nix
+      ./persistence/nixos.nix
     ];
 
   nix.nixPath =
@@ -217,8 +218,11 @@ cat <<EOF > /mnt/persist/etc/nixos/configuration.nix
 
   #persist
   fileSystems."/persist".neededForBoot = true;
-  environment.etc."NetworkManager/system-connections"= {
-    source = "/persist/etc/NetworkManager/system-connections";
+  environment.persistence."/persist" = {
+    directories = [
+      "/var/lib/bluetooth"
+      "/etc/NetworkManager/system-connections"
+    ];
   };
 
   services.zfs = {
