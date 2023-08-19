@@ -207,6 +207,11 @@ cat <<EOF > /mnt/persist/etc/nixos/configuration.nix
   time.timeZone = "America/Los_Angeles";
 
   # services.xserver.enable = true;
+  services.xserver.enable = true;
+  services.xserver.displayManager.gdm.enable = true;
+  services.xserver.desktopManager.gnome.enable = true;
+  # programs.dconf.enable = true;
+  services.udev.packages = with pkgs; [gnome.gnome-settings-daemon];
 
   nixpkgs.config.allowUnfree = true;
 
@@ -269,6 +274,8 @@ cat <<EOF > /mnt/persist/etc/nixos/configuration.nix
         home = "/home/${USER_NAME}";
         useDefaultShell = true;
         isNormalUser = true;
+	# File contains public keys for allowed SSH clients
+        openssh.authorizedKeys.keyFiles = [ /persist/etc/nixos/ssh/authorized_keys ];
       };
     };
   };
