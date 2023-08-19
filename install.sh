@@ -134,6 +134,8 @@ zfs set com.sun:auto-snapshot=true "$ZFS_DS_PERSIST"
 
 info "Creating persistent directory for host SSH keys ..."
 mkdir -p /mnt/persist/etc/ssh
+mkdir -p /mnt/persist/etc/nixos/ssh
+touch /mnt/persist/etc/nixos/ssh/authorized_keys
 
 info "Generating NixOS configuration (/mnt/etc/nixos/*.nix) ..."
 nixos-generate-config --root /mnt
