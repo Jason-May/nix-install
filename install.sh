@@ -164,6 +164,9 @@ mv /mnt/etc/nixos/configuration.nix /mnt/persist/etc/nixos/configuration.nix.ori
 info "Backing up the this installer script to /persist/etc/nixos/install.sh.original ..."
 cp "$0" /mnt/persist/etc/nixos/install.sh.original
 
+info "Adding Impermanence module"
+git clone https://github.com/nix-community/impermanence /mnt/persist/etc/nixos/impermanence
+
 info "Writing NixOS configuration to /persist/etc/nixos/ ..."
 cat <<EOF > /mnt/persist/etc/nixos/configuration.nix
 { config, pkgs, lib, ... }:
@@ -172,7 +175,7 @@ cat <<EOF > /mnt/persist/etc/nixos/configuration.nix
   imports =
     [ 
       ./hardware-configuration.nix
-      ./persistence/nixos.nix
+      ./impermanence/nixos.nix
     ];
 
   nix.nixPath =
@@ -260,7 +263,7 @@ cat <<EOF > /mnt/persist/etc/nixos/configuration.nix
       ${USER_NAME} = {
         createHome = true;
         passwordFile = "/persist/etc/passwords/${USER_NAME}";
-	      extraGroups = [ "wheel" "networkmanager" "audio" "dialout" ];
+	extraGroups = [ "wheel" "networkmanager" "audio" "dialout" ];
         group = "users";
         uid = 1000;
         home = "/home/${USER_NAME}";
