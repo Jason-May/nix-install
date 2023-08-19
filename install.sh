@@ -134,8 +134,6 @@ zfs set com.sun:auto-snapshot=true "$ZFS_DS_PERSIST"
 
 info "Creating persistent directory for host SSH keys ..."
 mkdir -p /mnt/persist/etc/ssh
-mkdir -p /mnt/persist/etc/nixos/ssh
-touch /mnt/persist/etc/nixos/ssh/authorized_keys
 
 info "Generating NixOS configuration (/mnt/etc/nixos/*.nix) ..."
 nixos-generate-config --root /mnt
@@ -276,8 +274,6 @@ cat <<EOF > /mnt/persist/etc/nixos/configuration.nix
         home = "/home/${USER_NAME}";
         useDefaultShell = true;
         isNormalUser = true;
-	# File contains public keys for allowed SSH clients
-        openssh.authorizedKeys.keyFiles = [ /persist/etc/nixos/ssh/authorized_keys ];
       };
     };
   };
