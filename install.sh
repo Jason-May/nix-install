@@ -142,13 +142,13 @@ info "Creating persistent directory for user authentication ..."
 mkdir -p /mnt/persist/etc/passwords
 
 info "Enter password for the root user ..."
-ROOT_PASSWORD_HASH="$(mkpasswd -m sha-512 | sed 's/\$/\\$/g')"
+ROOT_PASSWORD_HASH="$(mkpasswd -m sha-512)"
 
 info "Enter personal user name ..."
 read USER_NAME
 
 info "Enter password for '${USER_NAME}' user ..."
-USER_PASSWORD_HASH="$(mkpasswd -m sha-512 | sed 's/\$/\\$/g')"
+USER_PASSWORD_HASH="$(mkpasswd -m sha-512)"
 
 echo ${ROOT_PASSWORD_HASH} > /mnt/persist/etc/passwords/root
 echo ${USER_PASSWORD_HASH} > /mnt/persist/etc/passwords/${USER_NAME}
