@@ -203,6 +203,14 @@ cat <<EOF > /mnt/persist/etc/nixos/configuration.nix
 
   networking.useDHCP = false;
   networking.interfaces.wlp1s0.useDHCP = true;
+  networking.dhcpcd.wait = "background";  
+
+  hardware.bluetooth.enable = true;
+  services.blueman.enable = true;
+  hardware.pulseaudio.enable = true;
+  hardware.pulseaudio.support32Bit = true;
+
+  hardware.opengl.enable = true;
 
   time.timeZone = "America/Los_Angeles";
 
@@ -222,7 +230,15 @@ cat <<EOF > /mnt/persist/etc/nixos/configuration.nix
       nano
       git
       firefox
+      pavucontrol
+      vscodium
+      gnome.adwaita-icon-theme
+      gnomeExtensions.appindicator
+      kitty
+      chrome-gnome-shell
+      gnome3.adwaita-icon-theme
     ];
+    programs.fish.enable=true;
 
   #persist
   fileSystems."/persist".neededForBoot = true;
@@ -243,6 +259,7 @@ cat <<EOF > /mnt/persist/etc/nixos/configuration.nix
     enable = true;
     permitRootLogin = "no";
     passwordAuthentication = false;
+    kbdInteractiveAuthentication = false;
     hostKeys =
       [
         {
@@ -261,19 +278,19 @@ cat <<EOF > /mnt/persist/etc/nixos/configuration.nix
     mutableUsers = false;
     users = {
       root = {
-        passwordFile = "/persist/etc/passwords/root";
 	      isSystemUser = true;
+        passwordFile = "/persist/etc/passwords/root";
       };
 
       ${USER_NAME} = {
         createHome = true;
-        passwordFile = "/persist/etc/passwords/${USER_NAME}";
-	extraGroups = [ "wheel" "networkmanager" "audio" "dialout" ];
+	      extraGroups = [ "wheel" "networkmanager" "audio" "dialout" ];
         group = "users";
         uid = 1000;
         home = "/home/${USER_NAME}";
         useDefaultShell = true;
         isNormalUser = true;
+        passwordFile = "/persist/etc/passwords/${USER_NAME}";
       };
     };
   };
