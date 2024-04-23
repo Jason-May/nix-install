@@ -20,6 +20,9 @@ https://majiehong.com/post/2021-07-30_slow_nixos_startup/
 laptop additional stuff:
 https://huijzer.xyz/posts/nixos-laptop/
 
+auth ssh 
+https://rzetterberg.github.io/yubikey-gpg-nixos.html
+
 password gen
 
 this config still requires a users.nix file.
